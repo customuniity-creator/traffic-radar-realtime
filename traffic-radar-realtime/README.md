@@ -27,3 +27,13 @@ Bila hanya melakukan upload file statis, upload `index.html`, `app.js`, dan `sty
 - Refresh 1–3 menit adalah interval meminta pembaruan, tidak menjamin sensor lalu lintas terbaru.
 - Key berada di backend, namun endpoint publik dapat dipakai pengunjung dan menghabiskan kuota. Untuk penggunaan publik yang lebih besar, tambahkan rate limiting, autentikasi, atau batas kuota.
 - TomTom API mengirim lokasi asal dan tujuan untuk permintaan navigasi. Untuk peta dasar memakai tile OpenStreetMap.
+
+
+## v0.9 — Hemat baterai/kuota & rotasi peta
+- Trafik pause saat halaman/tab tersembunyi; tile layer dilepas agar tidak meminta tile baru. Saat kembali, satu refresh dilakukan, lalu siklus dimulai lagi.
+- GPS `watchPosition` dihentikan melalui `clearWatch` saat tab tersembunyi, lalu dilanjutkan saat tab kembali terlihat jika sebelumnya dimulai oleh pengguna. Tombol Jeda GPS untuk menjeda manual.
+- Interval trafik 1–5 menit (default 5 menit untuk instalasi baru; jika sebelumnya menyimpan interval lain, pilih 5 menit satu kali).
+- Peta bisa diputar dengan dua jari pada perangkat sentuh; mouse klik-kanan drag di desktop; tombol kompas kembali ke arah utara. Fitur ini memakai `@tomickigrzegorz/leaflet-rotate@0.3.0` dari CDN sehingga butuh internet.
+- GPS browser tidak bisa diandalkan untuk berjalan di latar belakang. Saat tab disembunyikan navigasi dan rerouting ikut dijeda.
+- Karena peta tetap memuat tile dasar dan trafik saat dibuka, kuota tidak dapat dijamin nol untuk satu siklus pembukaan, dan browser mungkin menunda event visibilitas.
+- Uji di Safari iPhone sebelum dipakai di jalan; perubahan ini belum diuji dengan API key pengguna.
